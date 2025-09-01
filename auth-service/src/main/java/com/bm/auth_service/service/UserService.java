@@ -2,6 +2,7 @@ package com.bm.auth_service.service;
 
 import com.bm.auth_service.dto.UserRequestDTO;
 import com.bm.auth_service.dto.UserResponseDTO;
+import com.bm.auth_service.exception.EmailAlreadyExistsException;
 import com.bm.auth_service.mapper.UserMapper;
 import com.bm.auth_service.model.User;
 import com.bm.auth_service.repository.UserRepository;
@@ -29,8 +30,9 @@ public class UserService {
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
         if (userRepository.existsByEmail(userRequestDTO.getEmail())) {
-
+            throw new EmailAlreadyExistsException("Such email: " + userRequestDTO.getEmail() + " already exists");
         }
+
         User newUser = UserMapper.toModel(userRequestDTO);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser = userRepository.save(newUser);

@@ -39,7 +39,7 @@ public class ClientService {
 
     public ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO) {
         if (clientRepository.existsByEmail(clientRequestDTO.getEmail())) {
-            throw new EmailAlreadyExistsException("Such email already used by user: " + clientRequestDTO.getEmail());
+            throw new EmailAlreadyExistsException("Such email: " + clientRequestDTO.getEmail() + " already exists");
         }
 
         Client newClient = clientRepository.save(ClientMapper.toModel(clientRequestDTO));

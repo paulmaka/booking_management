@@ -1,0 +1,10 @@
+### Update client
+PUT http://localhost:4004/api/clients/6290c469-d3dd-42e7-a95d-4eb09f1bf254
+Content-Type: application/json
+
+{
+  "name" : "Kel Mistborn",
+  "email" : "kelsier.mist@example.com",
+  "tableNumber" : "1"
+}
+###

@@ -1,0 +1,11 @@
+### Create new client
+POST http://localhost:4004/api/clients
+Content-Type: application/json
+
+{
+  "name" : "Kelsier Mistborn",
+  "email" : "kel.mist@example.com",
+  "tableNumber" : "156",
+  "bookDate" : "2025-08-26T15:40:00"
+}
+###

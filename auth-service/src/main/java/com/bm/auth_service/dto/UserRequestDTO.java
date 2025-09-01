@@ -4,22 +4,26 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class LoginRequestDTO {
+public class UserRequestDTO {
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, message = "Name can't exceed 100 characters")
+    private String username;
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Email should be a valid email address")
+    @Email(message = "Email should be valid")
     private String email;
 
-    @NotBlank(message = "Password uis required")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @NotBlank(message = "Password is required")
     private String password;
 
-    public LoginRequestDTO() {
+    public UserRequestDTO() {}
+
+    public String getUsername() {
+        return username;
     }
 
-    public LoginRequestDTO(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

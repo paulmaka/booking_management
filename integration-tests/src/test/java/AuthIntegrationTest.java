@@ -13,7 +13,7 @@ public class AuthIntegrationTest {
     }
 
     @Test
-    public void shouldReturnOKWithValidToken() {
+    public void shouldReturnOkWithValidToken() {
 
         String loginPayload = """
                 {
@@ -40,7 +40,7 @@ public class AuthIntegrationTest {
     public void shouldReturnUnauthorizedOnInvalidLogin() {
         String loginPayload = """
                 {
-                    "email": "testuser@test.com",
+                    "email": "user@test.com",
                     "password": "badpassword"
                 }
                 """;
@@ -53,6 +53,73 @@ public class AuthIntegrationTest {
                 .then()                             // assert
                 .statusCode(401);
 
+    }
+
+    @Test
+    public void shouldReturnOkOnCreateUser() {
+        String createUserPayload = """
+                {
+                  "username": "user3",
+                  "email": "user3@example.com",
+                  "password": "secret3"
+                }
+                """;
+
+        Response response = RestAssured.given()     // arrange
+                .contentType("application/json")
+                .body(createUserPayload)
+                .when()                             // act
+                .post("/auth/register")
+                .then()                             // assert
+                .statusCode(200)
+                .body("token", notNullValue())
+                .extract().response();
+
+        System.out.println("Generated token: " + response.jsonPath().getString("token"));
+    }
+
+    @Test
+    public void shouldReturnInvalidOnCreateUser() {
+        String createUserPayload = """
+                {
+                  "username": "",
+                  "email": "",
+                  "password": ""
+                }
+                """;
+
+        String message =  RestAssured.given()               // arrange
+                .contentType("application/json")
+                .body(createUserPayload)
+                .when()                                     // act
+                .post("/auth/register")
+                .then()                                     // assert
+                .statusCode(400)
+                .extract().body().asString();
+
+        System.out.println("Invalid: " + message);
+    }
+
+    @Test
+    public void shouldReturnEmailExceptionOnCreateUser() {
+        String createUserPayload = """
+                {
+                  "username": "user",
+                  "email": "user2@example.com",
+                  "password": "secret"
+                }
+                """;
+
+        String message =  RestAssured.given()               // arrange
+                .contentType("application/json")
+                .body(createUserPayload)
+                .when()                                     // act
+                .post("/auth/register")
+                .then()                                     // assert
+                .statusCode(400)
+                .extract().body().asString();
+
+        System.out.println("Email exception: " + message);
     }
 
 }

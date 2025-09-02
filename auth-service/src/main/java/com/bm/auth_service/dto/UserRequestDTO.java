@@ -4,7 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Класс DTO для запроса создания пользователя.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 public class UserRequestDTO {
+
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name can't exceed 100 characters")
     private String username;
@@ -41,4 +48,5 @@ public class UserRequestDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

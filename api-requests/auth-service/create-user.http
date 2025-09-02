@@ -3,9 +3,9 @@ POST http://localhost:4004/auth/register
 Content-Type: application/json
 
 {
-  "username": "user2",
-  "email": "user2@example.com",
-  "password": "secret2"
+  "username": "user3",
+  "email": "user3@example.com",
+  "password": "secret3"
 }
 
 > {% client.global.set("token", response.body.token) %}

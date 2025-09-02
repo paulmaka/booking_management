@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "clients")
 public class Client {
 
     @Id
@@ -23,7 +24,7 @@ public class Client {
     private String email;
 
     @NotNull
-    private int tableNumber;
+    private int tableId;
 
     @NotNull
     private LocalDateTime bookDate;
@@ -56,12 +57,12 @@ public class Client {
         this.email = email;
     }
 
-    public int getTableNumber() {
-        return tableNumber;
+    public int getTableId() {
+        return tableId;
     }
 
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
+    public void setTableId(int tableNumber) {
+        this.tableId = tableNumber;
     }
 
     public LocalDateTime getBookDate() {

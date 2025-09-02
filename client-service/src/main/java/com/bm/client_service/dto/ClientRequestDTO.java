@@ -16,7 +16,7 @@ public class ClientRequestDTO {
     private String email;
 
     @NotBlank(message = "Table number is required")
-    private String tableNumber;
+    private String tableId;
 
     @NotBlank(groups = CreateClientValidationGroup.class, message = "Date of booking table is required")
     private String bookDate;
@@ -40,12 +40,12 @@ public class ClientRequestDTO {
         this.email = email;
     }
 
-    public String getTableNumber() {
-        return tableNumber;
+    public String getTableId() {
+        return tableId;
     }
 
-    public void setTableNumber(String tableNumber) {
-        this.tableNumber = tableNumber;
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
     }
 
     public String getBookDate() {

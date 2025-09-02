@@ -6,6 +6,7 @@ package com.bm.auth_service.dto;
  * @version 0.0.1
  * @since 0.0.1
  */
+// TODO убрать и заменить на UserResponseDTO
 public class LoginResponseDTO {
 
     private final String token;

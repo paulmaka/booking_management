@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
  * @version 0.0.1
  * @since 0.0.1
  */
+// TODO убрать и заменить на UeerRequestDTO
 public class LoginRequestDTO {
 
     @NotBlank(message = "Email is required")

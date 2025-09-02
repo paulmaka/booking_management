@@ -5,7 +5,7 @@ public class ClientResponseDTO {
     private String id;
     private String name;
     private String email;
-    private String tableNumber;
+    private String tableId;
     private String bookDate;
 
     public ClientResponseDTO() {}
@@ -35,12 +35,12 @@ public class ClientResponseDTO {
         this.email = email;
     }
 
-    public String getTableNumber() {
-        return tableNumber;
+    public String getTableId() {
+        return tableId;
     }
 
-    public void setTableNumber(String tableNumber) {
-        this.tableNumber = tableNumber;
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
     }
 
     public String getBookDate() {

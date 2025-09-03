@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +26,8 @@ public class Client {
     private String email;
 
     @NotNull
-    private int tableId;
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    private RestaurantTabel table;
 
     @NotNull
     private LocalDateTime bookDate;
@@ -32,6 +35,8 @@ public class Client {
     @NotNull
     private LocalDateTime registerDate;
 
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Order> order = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -57,12 +62,12 @@ public class Client {
         this.email = email;
     }
 
-    public int getTableId() {
-        return tableId;
+    public RestaurantTabel getTable() {
+        return table;
     }
 
-    public void setTableId(int tableNumber) {
-        this.tableId = tableNumber;
+    public void setTable(RestaurantTabel table) {
+        this.table = table;
     }
 
     public LocalDateTime getBookDate() {
@@ -79,5 +84,13 @@ public class Client {
 
     public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
     }
 }

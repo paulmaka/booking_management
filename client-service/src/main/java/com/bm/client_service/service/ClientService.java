@@ -59,7 +59,6 @@ public class ClientService {
 
         client.setName(clientRequestDTO.getName());
         client.setEmail(clientRequestDTO.getEmail());
-        client.setTableId(Integer.parseInt(clientRequestDTO.getTableId()));
 
         Client updatedClient = clientRepository.save(client);
 

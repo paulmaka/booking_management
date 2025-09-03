@@ -13,7 +13,6 @@ public class ClientMapper {
         clientDTO.setId(client.getId().toString());
         clientDTO.setName(client.getName());
         clientDTO.setEmail(client.getEmail());
-        clientDTO.setTableId(String.valueOf(client.getTableId()));
         clientDTO.setBookDate(client.getBookDate().toString());
 
         return clientDTO;
@@ -24,7 +23,6 @@ public class ClientMapper {
 
         client.setName(clientRequestDTO.getName());
         client.setEmail(clientRequestDTO.getEmail());
-        client.setTableId(Integer.parseInt(clientRequestDTO.getTableId()));
         client.setBookDate(LocalDateTime.parse(clientRequestDTO.getBookDate()));
         client.setRegisterDate(LocalDateTime.now());
 

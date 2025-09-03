@@ -15,9 +15,6 @@ public class ClientRequestDTO {
     @Email(message = "Email should be valid")
     private String email;
 
-    @NotBlank(groups = CreateClientValidationGroup.class, message = "Date of booking table is required")
-    private String bookDate;
-
 
     public ClientRequestDTO() {}
 
@@ -37,11 +34,4 @@ public class ClientRequestDTO {
         this.email = email;
     }
 
-    public String getBookDate() {
-        return bookDate;
-    }
-
-    public void setBookDate(String bookDate) {
-        this.bookDate = bookDate;
-    }
 }

@@ -22,7 +22,7 @@ spring:
         - id: client-service-route
           uri: http://client-service:4000
           predicates:
-            - Path=/api/clients/**
+            - Path=/api/**
           filters:
             - StripPrefix=1
             - JwtValidation

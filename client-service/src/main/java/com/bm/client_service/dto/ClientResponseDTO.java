@@ -5,7 +5,6 @@ public class ClientResponseDTO {
     private String id;
     private String name;
     private String email;
-    private String bookDate;
 
     public ClientResponseDTO() {}
 
@@ -34,11 +33,4 @@ public class ClientResponseDTO {
         this.email = email;
     }
 
-    public String getBookDate() {
-        return bookDate;
-    }
-
-    public void setBookDate(String bookDate) {
-        this.bookDate = bookDate;
-    }
 }

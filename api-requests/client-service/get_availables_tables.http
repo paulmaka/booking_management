@@ -1,0 +1,9 @@
+### Get available tables
+POST http://localhost:4004/api/booking/time
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookTime" : "2025-08-24T10:00:00"
+}
+###

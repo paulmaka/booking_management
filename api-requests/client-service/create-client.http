@@ -1,5 +1,6 @@
 ### Create new client
 POST http://localhost:4004/api/clients
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

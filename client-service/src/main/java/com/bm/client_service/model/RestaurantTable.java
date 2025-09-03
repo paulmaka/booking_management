@@ -3,27 +3,24 @@ package com.bm.client_service.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tables")
-public class RestaurantTabel {
+public class RestaurantTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    private boolean active = false;
-
-    @OneToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL)
+    private List<Booking> bookings = new ArrayList<>();
 
     @NotNull
     private int countOfUsage = 0;
 
-    public RestaurantTabel() {
+    public RestaurantTable() {
     }
 
     public Long getId() {
@@ -34,20 +31,12 @@ public class RestaurantTabel {
         this.id = id;
     }
 
-    public boolean isActive() {
-        return active;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public int getCountOfUsage() {

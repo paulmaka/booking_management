@@ -26,14 +26,8 @@ public class Client {
     private String email;
 
     @NotNull
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    private RestaurantTabel table;
-
-    @NotNull
-    private LocalDateTime bookDate;
-
-    @NotNull
-    private LocalDateTime registerDate;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Booking> bookings = new ArrayList<>();
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> order = new ArrayList<>();
@@ -62,28 +56,12 @@ public class Client {
         this.email = email;
     }
 
-    public RestaurantTabel getTable() {
-        return table;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setTable(RestaurantTabel table) {
-        this.table = table;
-    }
-
-    public LocalDateTime getBookDate() {
-        return bookDate;
-    }
-
-    public void setBookDate(LocalDateTime bookDate) {
-        this.bookDate = bookDate;
-    }
-
-    public LocalDateTime getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(LocalDateTime registerDate) {
-        this.registerDate = registerDate;
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public List<Order> getOrder() {

@@ -2,107 +2,87 @@ CREATE TABLE IF NOT EXISTS clients
 (
     id              UUID PRIMARY KEY,
     name            VARCHAR(255)        NOT NULL,
-    email           VARCHAR(255) UNIQUE NOT NULL,
-    book_date        TIMESTAMP           NOT NULL,
-    register_date    TIMESTAMP           NOT NULL
+    email           VARCHAR(255) UNIQUE NOT NULL
     );
 
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf244',
        'Vin Mistborn',
-       'vin.mist@example.com',
-       '2025-08-25T09:00:00',
-       '2025-08-24T12:30:00'
+       'vin.mist@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf244');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf245',
        'John Snow',
-       'john.snow@example.com',
-       '2025-08-24T10:00:00',
-       '2025-08-23T23:00:00'
+       'john.snow@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf245');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf246',
        'Geralt Riviysky',
-       'gera.riv@example.com',
-       '2025-08-23T16:40:00',
-       '2025-08-22T22:00:00'
+       'gera.riv@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf246');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf247',
        'Wax Ladrian',
-       'wax.ladrian@example.com',
-       '2025-08-26T20:00:00',
-       '2025-08-26T18:00:00'
+       'wax.ladrian@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf247');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf250',
        'Maracy Colms',
-       'mara.colms@example.com',
-       '2025-08-25T12:30:00',
-       '2025-08-24T21:30:00'
+       'mara.colms@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf250');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf251',
        'Max Fray',
-       'max.fray@example.com',
-       '2025-08-27T11:00:00',
-       '2025-08-27T10:59:00'
+       'max.fray@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf251');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf252',
        'Aragorn Elessar',
-       'aragorn.elessar@example.com',
-       '2025-08-26T14:00:00',
-       '2025-08-25T14:00:00'
+       'aragorn.elessar@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf252');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf253',
        'Garret Shadow',
-       'gar.shad@example.com',
-       '2025-08-27T22:00:00',
-       '2025-08-26T23:00:00'
+       'gar.shad@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf253');
 
 
-INSERT INTO clients (id, name, email, book_date, register_date)
+INSERT INTO clients (id, name, email)
 SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf254',
        'Santyago Dark',
-       'santya.dark@example.com',
-       '2025-08-28T12:00:00',
-       '2025-08-27T12:00:00'
+       'santya.dark@example.com'
     WHERE NOT EXISTS (SELECT 1
                   FROM clients
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf254');
@@ -112,10 +92,7 @@ SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf254',
 CREATE TABLE IF NOT EXISTS tables
 (
     id              BIGINT          PRIMARY KEY,
-    active          BOOLEAN         NOT NULL DEFAULT FALSE,
-    client_id       UUID            UNIQUE,
-    count_of_usage  INTEGER         NOT NULL DEFAULT 0,
-    FOREIGN KEY (client_id) REFERENCES clients(id)
+    count_of_usage  INTEGER         NOT NULL DEFAULT 0
 );
 
 
@@ -134,6 +111,12 @@ WHERE NOT EXISTS (SELECT 1
 INSERT INTO tables (id)
 SELECT '3'
 WHERE NOT EXISTS (SELECT 1
+    FROM tables
+    WHERE id = '3');
+
+INSERT INTO tables (id)
+SELECT '4'
+    WHERE NOT EXISTS (SELECT 1
     FROM tables
     WHERE id = '4');
 
@@ -240,3 +223,65 @@ SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf273',
     WHERE NOT EXISTS (SELECT 1
                   FROM orders
                   WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf273');
+
+
+CREATE TABLE IF NOT EXISTS bookings
+(
+    id              UUID                PRIMARY KEY,
+    client_id       UUID                NOT NULL,
+    table_id        BIGINT              NOT NULL,
+    book_date        TIMESTAMP           NOT NULL,
+    register_date    TIMESTAMP           NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (table_id) REFERENCES tables(id)
+);
+
+INSERT INTO bookings (id, client_id, table_id, book_date, register_date)
+SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf281',
+       '6290c469-d3dd-42e7-a95d-4eb09f1bf254',
+       '1',
+       '2025-08-25T09:00:00',
+       '2025-08-24T12:30:00'
+    WHERE NOT EXISTS (SELECT 1
+                  FROM bookings
+                  WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf281');
+
+INSERT INTO bookings (id, client_id, table_id, book_date, register_date)
+SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf282',
+       '6290c469-d3dd-42e7-a95d-4eb09f1bf253',
+       '2',
+       '2025-08-24T10:00:00',
+       '2025-08-23T23:00:00'
+    WHERE NOT EXISTS (SELECT 1
+                  FROM bookings
+                  WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf282');
+
+INSERT INTO bookings (id, client_id, table_id, book_date, register_date)
+SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf283',
+       '6290c469-d3dd-42e7-a95d-4eb09f1bf252',
+       '3',
+       '2025-08-24T12:00:00',
+       '2025-08-23T23:00:00'
+    WHERE NOT EXISTS (SELECT 1
+                  FROM bookings
+                  WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf283');
+
+INSERT INTO bookings (id, client_id, table_id, book_date, register_date)
+SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf284',
+       '6290c469-d3dd-42e7-a95d-4eb09f1bf251',
+       '4',
+       '2025-08-24T10:00:00',
+       '2025-08-23T23:00:00'
+    WHERE NOT EXISTS (SELECT 1
+                  FROM bookings
+                  WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf284');
+
+INSERT INTO bookings (id, client_id, table_id, book_date, register_date)
+SELECT '6290c469-d3dd-42e7-a95d-4eb09f1bf285',
+       '6290c469-d3dd-42e7-a95d-4eb09f1bf250',
+       '5',
+       '2025-08-24T10:00:00',
+       '2025-08-23T23:00:00'
+    WHERE NOT EXISTS (SELECT 1
+                  FROM bookings
+                  WHERE id = '6290c469-d3dd-42e7-a95d-4eb09f1bf285');

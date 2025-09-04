@@ -21,6 +21,6 @@ public interface RestaurantTableRepository extends JpaRepository<RestaurantTable
           and b.book_date + interval '2 hour' > :start_ts
     )
     """, nativeQuery = true)
-    List<RestaurantTable> findAvailableNative(@Param("start_ts") LocalDateTime start, @Param("end_ts") LocalDateTime end);
+    List<RestaurantTable> findAvailableTables(@Param("start_ts") LocalDateTime start, @Param("end_ts") LocalDateTime end);
 
 }

@@ -1,122 +1,507 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <title>Auth</title>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1" />-->
+<!--    <style>-->
+<!--        body { font-family: Inter, Arial, sans-serif; background:#f5f7fb; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }-->
+<!--        .container { background:#fff; width:320px; padding:24px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.08); }-->
+<!--        h2 { margin:0 0 12px; text-align:center; font-weight:600; }-->
+<!--        form { display:flex; flex-direction:column; }-->
+<!--        input { margin:6px 0; padding:10px; border:1px solid #e4e7ee; border-radius:10px; outline:none; }-->
+<!--        input:focus { border-color:#7aa2ff; box-shadow:0 0 0 3px rgba(122,162,255,.18); }-->
+<!--        button { margin-top:12px; padding:12px; border:none; border-radius:10px; background:#2573ff; color:#fff; font-weight:600; cursor:pointer; }-->
+<!--        button:hover { filter:brightness(.95); }-->
+<!--        .muted { margin-top:12px; text-align:center; color:#6b7280; cursor:pointer; }-->
+<!--        .error { margin-top:8px; color:#b91c1c; font-size:12px; min-height:16px; }-->
+<!--        .ok { margin-top:8px; color: #088c29; font-size:12px; min-height:16px; }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h2 id="form-title">Вход</h2>-->
+
+<!--    <form id="login-form">-->
+<!--        <input type="email" id="login-email" placeholder="Email" required />-->
+<!--        <input type="password" id="login-password" placeholder="Пароль" required />-->
+<!--        <button type="submit">Войти</button>-->
+<!--        <div class="error" id="login-error"></div>-->
+<!--        <div class="ok" id="login-ok"></div>-->
+<!--    </form>-->
+
+<!--    <form id="register-form" style="display:none;">-->
+<!--        <input type="text" id="register-username" placeholder="Имя" required />-->
+<!--        <input type="email" id="register-email" placeholder="Email" required />-->
+<!--        <input type="password" id="register-password" placeholder="Пароль" required />-->
+<!--        <button type="submit">Создать аккаунт</button>-->
+<!--        <div class="error" id="register-error"></div>-->
+<!--        <div class="ok" id="register-ok"></div>-->
+<!--    </form>-->
+
+<!--    <div class="muted" id="toggle-link">Создать аккаунт</div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const loginForm = document.getElementById('login-form');-->
+<!--    const registerForm = document.getElementById('register-form');-->
+<!--    const toggleLink = document.getElementById('toggle-link');-->
+<!--    const formTitle = document.getElementById('form-title');-->
+<!--    const loginError = document.getElementById('login-error');-->
+<!--    const loginOk = document.getElementById('login-ok');-->
+<!--    const registerError = document.getElementById('register-error');-->
+<!--    const registerOk = document.getElementById('register-ok');-->
+
+<!--    let showRegister = false;-->
+<!--    toggleLink.addEventListener('click', () => {-->
+<!--        showRegister = !showRegister;-->
+<!--        if (showRegister) {-->
+<!--            loginForm.style.display = 'none';-->
+<!--            registerForm.style.display = 'flex';-->
+<!--            formTitle.textContent = 'Регистрация';-->
+<!--            toggleLink.textContent = 'Уже есть аккаунт? Войти';-->
+<!--        } else {-->
+<!--            loginForm.style.display = 'flex';-->
+<!--            registerForm.style.display = 'none';-->
+<!--            formTitle.textContent = 'Вход';-->
+<!--            toggleLink.textContent = 'Создать аккаунт';-->
+<!--        }-->
+<!--        [loginError, loginOk, registerError, registerOk].forEach(el => el.textContent = '');-->
+<!--    });-->
+
+<!--    const API_BASE = '/auth';-->
+
+<!--    async function jsonOrText(res) {-->
+<!--        const ct = res.headers.get('content-type') || '';-->
+<!--        if (ct.includes('application/json')) return res.json();-->
+<!--        return res.text();-->
+<!--    }-->
+
+<!--    loginForm.addEventListener('submit', async (e) => {-->
+<!--        e.preventDefault();-->
+<!--        loginError.textContent = ''; loginOk.textContent = '';-->
+<!--        try {-->
+<!--            const email = document.getElementById('login-email').value.trim();-->
+<!--            const password = document.getElementById('login-password').value;-->
+<!--            const res = await fetch(`${API_BASE}/login`, {-->
+<!--                method: 'POST', headers: { 'Content-Type': 'application/json' },-->
+<!--                body: JSON.stringify({ email, password })-->
+<!--            });-->
+<!--            const body = await jsonOrText(res);-->
+<!--            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Ошибка входа'));-->
+<!--            const token = body.token;-->
+<!--            localStorage.setItem('token', token);-->
+<!--            loginOk.textContent = 'Успешный вход.';-->
+<!--        } catch (err) {-->
+<!--            loginError.textContent = err.message;-->
+<!--        }-->
+<!--    });-->
+
+<!--    registerForm.addEventListener('submit', async (e) => {-->
+<!--        e.preventDefault();-->
+<!--        registerError.textContent = ''; registerOk.textContent = '';-->
+<!--        try {-->
+<!--            const username = document.getElementById('register-username').value.trim();-->
+<!--            const email = document.getElementById('register-email').value.trim();-->
+<!--            const password = document.getElementById('register-password').value;-->
+<!--            const res = await fetch(`${API_BASE}/register`, {-->
+<!--                method: 'POST', headers: { 'Content-Type': 'application/json' },-->
+<!--                body: JSON.stringify({ username, email, password })-->
+<!--            });-->
+<!--            const body = await jsonOrText(res);-->
+<!--            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Ошибка регистрации'));-->
+<!--            const token = body.token;-->
+<!--            localStorage.setItem('token', token);-->
+<!--            registerOk.textContent = 'Аккаунт создан.';-->
+<!--        } catch (err) {-->
+<!--            registerError.textContent = err.message;-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <title>Auth</title>
+    <title>Restaurant</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        body { font-family: Inter, Arial, sans-serif; background:#f5f7fb; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
-        .container { background:#fff; width:320px; padding:24px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
-        h2 { margin:0 0 12px; text-align:center; font-weight:600; }
-        form { display:flex; flex-direction:column; }
-        input { margin:6px 0; padding:10px; border:1px solid #e4e7ee; border-radius:10px; outline:none; }
-        input:focus { border-color:#7aa2ff; box-shadow:0 0 0 3px rgba(122,162,255,.18); }
-        button { margin-top:12px; padding:12px; border:none; border-radius:10px; background:#2573ff; color:#fff; font-weight:600; cursor:pointer; }
-        button:hover { filter:brightness(.95); }
-        .muted { margin-top:12px; text-align:center; color:#6b7280; cursor:pointer; }
-        .error { margin-top:8px; color:#b91c1c; font-size:12px; min-height:16px; }
-        .ok { margin-top:8px; color: #088c29; font-size:12px; min-height:16px; }
+        :root{--bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--pri:#2573ff;--pri-2:#7aa2ff;--ok:#088c29;--err:#b91c1c;--br:#e4e7ee}
+        *{box-sizing:border-box}
+        body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .wrap{width:100%;max-width:980px;padding:20px}
+        .shell{background:var(--card);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);overflow:hidden}
+        .top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--br)}
+        .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+        .brand img{width:36px;height:36px}
+        .userbox{display:flex;align-items:center;gap:12px}
+        .btn{background:var(--pri);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer}
+        .btn[disabled]{opacity:.5;cursor:not-allowed}
+        .btn-secondary{background:#eef2ff;color:#1e3a8a}
+        .content{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
+        .card{background:#fff;border:1px solid var(--br);border-radius:16px;padding:20px}
+        .hero{display:flex;flex-direction:column;justify-content:center;gap:18px}
+        .hero h1{margin:0;font-size:28px;line-height:1.2}
+        .hero p{margin:0;color:var(--muted)}
+        .hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+        .imgbox{border-radius:16px;overflow:hidden;border:1px solid var(--br);background:linear-gradient(120deg,#ffe7cc,#ffd5e2 50%,#e6f2ff)}
+        .imgbox svg{display:block;width:100%;height:100%}
+        .muted{color:var(--muted);font-size:14px}
+        .error{color:var(--err);min-height:18px;font-size:12px;margin-top:8px}
+        .ok{color:var(--ok);min-height:18px;font-size:12px;margin-top:8px}
+        .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .formcol form{display:flex;flex-direction:column;gap:10px}
+        input,select{padding:10px;border:1px solid var(--br);border-radius:10px;outline:none}
+        input:focus,select:focus{border-color:var(--pri-2);box-shadow:0 0 0 3px rgba(122,162,255,.18)}
+        .tables{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+        .tablebtn{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;border-radius:14px;border:1px solid var(--br);background:#f9fafb;cursor:not-allowed;opacity:.55;transition:.15s}
+        .tablebtn.active{cursor:pointer;opacity:1;background:#f8fbff;border-color:#bfd3ff}
+        .tablebtn.selected{background:var(--pri);border-color:var(--pri);color:#fff}
+        .tablebtn .num{margin-top:8px;font-weight:700}
+        .tablebtn svg{width:56px;height:56px}
+        .centerbox{max-width:420px;margin:0 auto;padding:24px}
+        .auth h2{text-align:center;margin:0 0 12px}
+        .toggle{margin-top:12px;text-align:center;color:var(--muted);cursor:pointer}
+        .hidden{display:none}
+        @media (max-width:920px){.content{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
-<div class="container">
-    <h2 id="form-title">Вход</h2>
+<div class="wrap">
+    <div class="shell">
+        <div class="top">
+            <div class="brand">
+                <img alt="logo" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop stop-color='%23ff7c7c'/><stop offset='1' stop-color='%23ffd36e'/></linearGradient></defs><rect width='120' height='120' rx='24' fill='url(%23g)'/><circle cx='60' cy='60' r='26' fill='white' opacity='.9'/><path d='M42 74c7-8 29-8 36 0' stroke='%232573ff' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='49' cy='56' r='4' fill='%232573ff'/><circle cx='71' cy='56' r='4' fill='%232573ff'/></svg>">
+                <span>La Bon Appétit</span>
+            </div>
+            <div class="userbox">
+                <span id="user-email" class="muted"></span>
+                <button id="logout-btn" class="btn btn-secondary hidden">Выйти</button>
+            </div>
+        </div>
 
-    <form id="login-form">
-        <input type="email" id="login-email" placeholder="Email" required />
-        <input type="password" id="login-password" placeholder="Пароль" required />
-        <button type="submit">Войти</button>
-        <div class="error" id="login-error"></div>
-        <div class="ok" id="login-ok"></div>
-    </form>
+        <div id="view-auth" class="auth">
+            <div class="centerbox">
+                <h2 id="form-title">Вход</h2>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required />
+                    <input type="password" id="login-password" placeholder="Пароль" required />
+                    <button type="submit" class="btn" style="width:100%">Войти</button>
+                    <div class="error" id="login-error"></div>
+                    <div class="ok" id="login-ok"></div>
+                </form>
+                <form id="register-form" class="hidden">
+                    <input type="text" id="register-username" placeholder="Имя" required />
+                    <input type="email" id="register-email" placeholder="Email" required />
+                    <input type="password" id="register-password" placeholder="Пароль" required />
+                    <button type="submit" class="btn" style="width:100%">Создать аккаунт</button>
+                    <div class="error" id="register-error"></div>
+                    <div class="ok" id="register-ok"></div>
+                </form>
+                <div class="toggle" id="toggle-link">Создать аккаунт</div>
+            </div>
+        </div>
 
-    <form id="register-form" style="display:none;">
-        <input type="text" id="register-username" placeholder="Имя" required />
-        <input type="email" id="register-email" placeholder="Email" required />
-        <input type="password" id="register-password" placeholder="Пароль" required />
-        <button type="submit">Создать аккаунт</button>
-        <div class="error" id="register-error"></div>
-        <div class="ok" id="register-ok"></div>
-    </form>
+        <div id="view-home" class="content hidden">
+            <div class="card hero">
+                <h1>Добро пожаловать в La Bon Appétit</h1>
+                <p>Авторская кухня, сезонные блюда и уютная атмосфера. Забронируйте столик.</p>
+                <div class="actions">
+                    <button id="go-booking" class="btn">Забронировать</button>
+                </div>
+                <div id="last-booking" class="muted"></div>
+            </div>
+            <div class="imgbox">
+                <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="restaurant">
+                    <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#fff1e6"/><stop offset="1" stop-color="#e6f2ff"/></linearGradient></defs>
+                    <rect width="800" height="500" fill="url(#g1)"/>
+                    <g opacity=".15"><circle cx="650" cy="120" r="90" fill="#2573ff"/><circle cx="200" cy="360" r="120" fill="#ff7c7c"/><rect x="340" y="200" width="220" height="140" rx="18" fill="#111827"/></g>
+                    <g transform="translate(140,150)"><rect x="0" y="120" width="520" height="18" rx="9" fill="#dbeafe"/><rect x="60" y="40" width="70" height="60" rx="8" fill="#fde68a"/><rect x="170" y="60" width="110" height="80" rx="8" fill="#c7d2fe"/><rect x="310" y="50" width="80" height="70" rx="8" fill="#fecaca"/><circle cx="420" cy="80" r="38" fill="#bfdbfe"/></g>
+                </svg>
+            </div>
+        </div>
 
-    <div class="muted" id="toggle-link">Создать аккаунт</div>
+        <div id="view-booking" class="content hidden">
+            <div class="grid">
+                <div class="card formcol">
+                    <h3 style="margin:0 0 12px">Выбор времени</h3>
+                    <form id="time-form">
+                        <input type="datetime-local" id="book-time" required />
+                        <button type="submit" class="btn">Показать свободные столы</button>
+                        <div class="error" id="time-error"></div>
+                    </form>
+                    <div style="height:12px"></div>
+                    <h3 style="margin:12px 0">Столы</h3>
+                    <div id="tables" class="tables"></div>
+                </div>
+                <div class="card formcol">
+                    <h3 style="margin:0 0 12px">Данные клиента</h3>
+                    <form id="booking-form">
+                        <input type="text" id="client-name" placeholder="Имя" required />
+                        <input type="email" id="client-email" placeholder="Email" required />
+                        <input type="hidden" id="selected-table" />
+                        <button type="submit" id="confirm-btn" class="btn" disabled>Подтвердить</button>
+                        <div class="error" id="booking-error"></div>
+                        <div class="ok" id="booking-ok"></div>
+                    </form>
+                    <div class="muted" style="margin-top:12px" id="back-home">← На главную</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const toggleLink = document.getElementById('toggle-link');
-    const formTitle = document.getElementById('form-title');
-    const loginError = document.getElementById('login-error');
-    const loginOk = document.getElementById('login-ok');
-    const registerError = document.getElementById('register-error');
-    const registerOk = document.getElementById('register-ok');
+    const AUTH_BASE = '/auth'
+    const BOOKING_BASE = '/booking'
+    const state={token:localStorage.getItem('token')||null,email:localStorage.getItem('email')||'',available:new Set(),selectedTable:null,bookTime:null,lastBooking:JSON.parse(localStorage.getItem('lastBooking')||'null')}
+    const el=(id)=>document.getElementById(id)
+    const viewAuth=el('view-auth')
+    const viewHome=el('view-home')
+    const viewBooking=el('view-booking')
+    const userEmail=el('user-email')
+    const logoutBtn=el('logout-btn')
+    const goBooking=el('go-booking')
+    const lastBookingBox=el('last-booking')
+    const timeForm=el('time-form')
+    const bookTimeInput=el('book-time')
+    const timeError=el('time-error')
+    const tablesBox=el('tables')
+    const bookingForm=el('booking-form')
+    const clientName=el('client-name')
+    const clientEmail=el('client-email')
+    const bookingError=el('booking-error')
+    const bookingOk=el('booking-ok')
+    const selectedTableHidden=el('selected-table')
+    const confirmBtn=el('confirm-btn')
+    const backHome=el('back-home')
+    const loginForm=el('login-form')
+    const registerForm=el('register-form')
+    const toggleLink=el('toggle-link')
+    const formTitle=el('form-title')
+    const loginError=el('login-error')
+    const loginOk=el('login-ok')
+    const registerError=el('register-error')
+    const registerOk=el('register-ok')
 
-    let showRegister = false;
-    toggleLink.addEventListener('click', () => {
-        showRegister = !showRegister;
-        if (showRegister) {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'flex';
-            formTitle.textContent = 'Регистрация';
-            toggleLink.textContent = 'Уже есть аккаунт? Войти';
-        } else {
-            loginForm.style.display = 'flex';
-            registerForm.style.display = 'none';
-            formTitle.textContent = 'Вход';
-            toggleLink.textContent = 'Создать аккаунт';
-        }
-        [loginError, loginOk, registerError, registerOk].forEach(el => el.textContent = '');
-    });
-
-    const API_BASE = '/auth';
-
-    async function jsonOrText(res) {
-        const ct = res.headers.get('content-type') || '';
-        if (ct.includes('application/json')) return res.json();
-        return res.text();
+    function show(id){
+        viewAuth.classList.add('hidden')
+        viewHome.classList.add('hidden')
+        viewBooking.classList.add('hidden')
+        id.classList.remove('hidden')
     }
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        loginError.textContent = ''; loginOk.textContent = '';
-        try {
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            const res = await fetch(`${API_BASE}/login`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            const body = await jsonOrText(res);
-            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Ошибка входа'));
-            const token = body.token;
-            localStorage.setItem('token', token);
-            loginOk.textContent = 'Успешный вход.';
-        } catch (err) {
-            loginError.textContent = err.message;
-        }
-    });
+    function setAuth(email,token){
+        state.email=email
+        state.token=token
+        localStorage.setItem('token',token)
+        localStorage.setItem('email',email)
+        userEmail.textContent=email||''
+        logoutBtn.classList.toggle('hidden',!token)
+    }
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        registerError.textContent = ''; registerOk.textContent = '';
-        try {
-            const username = document.getElementById('register-username').value.trim();
-            const email = document.getElementById('register-email').value.trim();
-            const password = document.getElementById('register-password').value;
-            const res = await fetch(`${API_BASE}/register`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password })
-            });
-            const body = await jsonOrText(res);
-            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Ошибка регистрации'));
-            const token = body.token;
-            localStorage.setItem('token', token);
-            registerOk.textContent = 'Аккаунт создан.';
-        } catch (err) {
-            registerError.textContent = err.message;
+    function renderHome(){
+        userEmail.textContent=state.email||''
+        logoutBtn.classList.toggle('hidden',!state.token)
+        if(state.lastBooking){
+            const b=state.lastBooking
+            lastBookingBox.innerHTML=`Ваша бронь: <b>${b.name}</b>, стол ${b.table}, ${new Date(b.bookDate).toLocaleString()}, номер: ${b.bookId}`
+        }else{
+            lastBookingBox.textContent=''
         }
-    });
+    }
+
+    function tableSvg(active,selected){
+        const stroke=selected?'#ffffff':active?'#2573ff':'#9ca3af'
+        const fillTop=selected?'#ffffff':active?'#dbeafe':'#e5e7eb'
+        const fillSeat=selected?'#ffffff':active?'#eaf2ff':'#eef2f7'
+        return `
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="10" y="22" width="44" height="20" rx="6" fill="${fillTop}" stroke="${stroke}" stroke-width="2"></rect>
+        <rect x="6" y="12" width="12" height="12" rx="4" fill="${fillSeat}" stroke="${stroke}" stroke-width="1.5"></rect>
+        <rect x="46" y="12" width="12" height="12" rx="4" fill="${fillSeat}" stroke="${stroke}" stroke-width="1.5"></rect>
+        <rect x="6" y="40" width="12" height="12" rx="4" fill="${fillSeat}" stroke="${stroke}" stroke-width="1.5"></rect>
+        <rect x="46" y="40" width="12" height="12" rx="4" fill="${fillSeat}" stroke="${stroke}" stroke-width="1.5"></rect>
+      </svg>
+    `
+    }
+
+    function renderTables(){
+        tablesBox.innerHTML=''
+        const ids=Array.from({length:7},(_,i)=>String(i+1))
+        ids.forEach(n=>{
+            const active=state.available.has(n)
+            const selected=state.selectedTable===n
+            const btn=document.createElement('button')
+            btn.className='tablebtn'+(active?' active':'')+(selected?' selected':'')
+            btn.disabled=!active
+            btn.innerHTML=`${tableSvg(active,selected)}<div class="num">Стол ${n}</div>`
+            btn.onclick=()=>{
+                if(!active) return
+                state.selectedTable=n
+                selectedTableHidden.value=n
+                Array.from(tablesBox.children).forEach(c=>c.classList.remove('selected'))
+                btn.classList.add('selected')
+                updateConfirmState()
+            }
+            tablesBox.appendChild(btn)
+        })
+    }
+
+    function updateConfirmState(){
+        const ready=Boolean(state.bookTime && state.selectedTable && clientName.value.trim() && clientEmail.value.trim())
+        confirmBtn.disabled=!ready
+    }
+
+    async function jsonOrText(res){
+        const ct=res.headers.get('content-type')||''
+        if(ct.includes('application/json')) return res.json()
+        return res.text()
+    }
+
+    function join(base, path) {
+        if (!path) return base
+        return base.replace(/\/$/, '') + '/' + String(path).replace(/^\//, '')
+    }
+
+    async function bookingFetch(path, opts = {}) {
+        const headers = opts.headers || {}
+        if (state.token) headers['Authorization'] = 'Bearer ' + state.token
+        return fetch(join(BOOKING_BASE, path), { ...opts, headers })
+    }
+
+    toggleLink.addEventListener('click',()=>{
+        const toRegister=registerForm.classList.contains('hidden')
+        registerForm.classList.toggle('hidden',!toRegister?true:false)
+        loginForm.classList.toggle('hidden',toRegister?true:false)
+        formTitle.textContent=toRegister?'Регистрация':'Вход'
+        toggleLink.textContent=toRegister?'Уже есть аккаунт? Войти':'Создать аккаунт'
+        ;[loginError,loginOk,registerError,registerOk].forEach(e=>e.textContent='')
+    })
+
+    loginForm.addEventListener('submit',async(e)=>{
+        e.preventDefault()
+        loginError.textContent=''
+        loginOk.textContent=''
+        try{
+            const email=el('login-email').value.trim()
+            const password=el('login-password').value
+            const res=await fetch(`${AUTH_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})})
+            const body=await jsonOrText(res)
+            if(!res.ok) throw new Error(typeof body==='string'?body:(body?.message||'Ошибка входа'))
+            const token=body.token
+            setAuth(email,token)
+            show(viewHome)
+            renderHome()
+            loginOk.textContent='Успешный вход.'
+        }catch(err){loginError.textContent=err.message}
+    })
+
+    registerForm.addEventListener('submit',async(e)=>{
+        e.preventDefault()
+        registerError.textContent=''
+        registerOk.textContent=''
+        try{
+            const username=el('register-username').value.trim()
+            const email=el('register-email').value.trim()
+            const password=el('register-password').value
+            const res=await fetch(`${AUTH_BASE}/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password})})
+            const body=await jsonOrText(res)
+            if(!res.ok) throw new Error(typeof body==='string'?body:(body?.message||'Ошибка регистрации'))
+            const token=body.token
+            setAuth(email,token)
+            show(viewHome)
+            renderHome()
+            registerOk.textContent='Аккаунт создан.'
+        }catch(err){registerError.textContent=err.message}
+    })
+
+    logoutBtn.addEventListener('click',()=>{
+        localStorage.removeItem('token')
+        localStorage.removeItem('email')
+        setAuth('',null)
+        location.reload()
+    })
+
+    goBooking.addEventListener('click',()=>{
+        state.available=new Set()
+        state.selectedTable=null
+        state.bookTime=null
+        bookTimeInput.value=''
+        bookingError.textContent=''
+        bookingOk.textContent=''
+        timeError.textContent=''
+        clientName.value=state.email?state.email.split('@')[0]:''
+        clientEmail.value=state.email||''
+        selectedTableHidden.value=''
+        renderTables()
+        updateConfirmState()
+        show(viewBooking)
+    })
+
+    backHome.addEventListener('click',()=>{
+        show(viewHome)
+        renderHome()
+    })
+
+    timeForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        timeError.textContent = ''
+        try {
+            const raw = bookTimeInput.value.trim()
+            if (!raw) throw new Error('Выберите время')
+            const local = raw.length === 16 ? raw + ':00' : raw
+            state.bookTime = local
+            const res = await bookingFetch('time', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ bookTime: local }) })
+            const body = await jsonOrText(res)
+            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Не удалось получить столы'))
+            const ids = (Array.isArray(body) ? body : []).map(x => String(x.id))
+            state.available = new Set(ids)
+            state.selectedTable = null
+            selectedTableHidden.value = ''
+            renderTables()
+            updateConfirmState()
+        } catch (err) { timeError.textContent = err.message }
+    })
+
+
+    bookingForm.addEventListener('input',updateConfirmState)
+
+    bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        bookingError.textContent = ''
+        bookingOk.textContent = ''
+        try {
+            if (!state.bookTime) throw new Error('Сначала выберите время')
+            if (!state.selectedTable) throw new Error('Выберите стол')
+            const payload = {
+                name: clientName.value.trim(),
+                email: clientEmail.value.trim(),
+                bookTime: state.bookTime,
+                table: String(state.selectedTable)
+            }
+            const res = await bookingFetch('', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+            const body = await jsonOrText(res)
+            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Не удалось создать бронь'))
+            state.lastBooking = body
+            localStorage.setItem('lastBooking', JSON.stringify(body))
+            bookingOk.textContent = 'Бронь подтверждена'
+            show(viewHome)
+            renderHome()
+        } catch (err) { bookingError.textContent = err.message }
+    })
+
+
+    function boot(){
+        userEmail.textContent=state.email||''
+        logoutBtn.classList.toggle('hidden',true)
+        show(viewAuth)
+    }
+    boot()
 </script>
 </body>
 </html>
+
+

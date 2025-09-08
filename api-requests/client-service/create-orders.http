@@ -1,0 +1,17 @@
+### Create new orders
+POST http://localhost:4004/api/order
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+[
+    {
+      "dishName" : "Мороженое",
+      "bookId" : "6290c469-d3dd-42e7-a95d-4eb09f1bf281"
+    },
+
+    {
+      "dishName" : "Чай",
+      "bookId" : "6290c469-d3dd-42e7-a95d-4eb09f1bf281"
+    }
+]
+###

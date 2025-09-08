@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS clients
 (
     id              UUID PRIMARY KEY,
     name            VARCHAR(255)        NOT NULL,
-    email           VARCHAR(255) UNIQUE NOT NULL
+    email           VARCHAR(255)        NOT NULL
     );
 
 
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS dishes
     id              UUID                PRIMARY KEY,
     cost            INTEGER             NOT NULL,
     category        VARCHAR(255)        NOT NULL,
-    name            VARCHAR(255)        NOT NULL,
+    name            VARCHAR(255)        UNIQUE NOT NULL,
     description     VARCHAR(800)        NOT NULL
 );
 

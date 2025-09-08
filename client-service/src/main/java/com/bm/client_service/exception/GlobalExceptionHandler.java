@@ -40,4 +40,13 @@ public class GlobalExceptionHandler {
         errors.put("message", "Client not found");
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleBookingNotFoundException(BookingNotFoundException exception) {
+        Map<String, String> errors = new HashMap<>();
+
+        log.warn("Booking not found {}", exception.getMessage());
+        errors.put("message", "Booking not found");
+        return ResponseEntity.badRequest().body(errors);
+    }
 }

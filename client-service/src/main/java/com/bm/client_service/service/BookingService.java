@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BookingService {
@@ -70,5 +71,9 @@ public class BookingService {
         Booking addedBooking = bookingRepository.save(booking);
 
         return BookingMapper.toBookingResponseDTO(addedBooking);
+    }
+
+    public Optional<Booking> findBooking(String bookingId) {
+        return bookingRepository.findById(UUID.fromString(bookingId));
     }
 }

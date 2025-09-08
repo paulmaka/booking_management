@@ -1,0 +1,5 @@
+### GET request to get all dishes
+GET http://localhost:4004/api/order
+Authorization: Bearer {{token}}
+
+###

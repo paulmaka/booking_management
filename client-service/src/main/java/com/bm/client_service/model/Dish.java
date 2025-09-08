@@ -22,6 +22,7 @@ public class Dish {
     private String category;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
     @NotNull

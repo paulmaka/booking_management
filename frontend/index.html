@@ -110,6 +110,11 @@
         }
         input::placeholder{color:rgba(248,244,227,.6)}
         input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(196,169,91,.18)}
+        .auth form input,
+        .auth form button {
+            width: 100%;
+            box-sizing: border-box;
+        }
 
         .error{color:var(--err);min-height:18px;font-size:12px;margin-top:8px}
         .ok{color:var(--ok);min-height:18px;font-size:12px;margin-top:8px}
@@ -132,8 +137,112 @@
         .toggle{margin-top:12px;text-align:center;color:var(--sage);cursor:pointer}
 
         @media (max-width:920px){.content{grid-template-columns:1fr}}
+
+        /* ——— Блок "Ваша бронь" ——— */
+        .booking-card{
+            background: rgba(255,255,255,.06);
+            border:1px solid var(--br);
+            border-radius:14px;
+            padding:12px 14px;
+            box-shadow:0 8px 20px rgba(0,0,0,.25);
+            margin-top:10px;
+        }
+        .booking-card .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+        .booking-card .meta{display:flex;gap:14px;flex-wrap:wrap}
+        .badge{
+            display:inline-block;padding:4px 8px;border-radius:999px;
+            background:rgba(196,169,91,.18);border:1px solid var(--br);color:var(--ivory);font-weight:700;font-size:12px
+        }
+        .booking-actions{display:flex;gap:10px;align-items:center}
+
+        /* ——— Модалка выбора блюд ——— */
+        .modal-backdrop{
+            position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+            background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:50;
+        }
+        .modal{width:min(920px,95vw);max-height:85vh;overflow:auto;
+            background:var(--card-strong);border:1px solid var(--br);border-radius:16px;padding:18px 18px 16px;
+            box-shadow:0 30px 80px rgba(0,0,0,.5);
+        }
+        .modal .modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        .modal h3{margin:0;color:var(--gold)}
+        .modal .controls{display:flex;gap:10px;align-items:center;margin:8px 0 14px}
+        .modal .controls input{width:260px}
+        .dish-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:10px;
+        }
+        @media (max-width:720px){.dish-grid{grid-template-columns:1fr}}
+        .dish-card{
+            display:flex;gap:12px;align-items:flex-start;
+            border:1px solid var(--br);border-radius:12px;padding:10px;
+            background:rgba(255,255,255,.05);
+        }
+        .dish-card h4{margin:0 0 4px;color:var(--ivory)}
+        .dish-card p{margin:0;color:var(--muted);font-size:13px}
+        .dish-pill{display:flex;gap:6px;align-items:center}
+        .dish-pill .pill{font-size:12px;border:1px solid var(--br);border-radius:999px;padding:2px 8px;background:rgba(255,255,255,.06)}
+        .modal .bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+        .hidden{display:none!important}
+        .decor-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .decor-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* растягиваем по размеру блока */
+            display: block;
+        }
+
+        .placeholder-text {
+            position: absolute;
+            bottom: 12%;          /* вместо центрирования – опускаем вниз */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 26px;
+            font-style: italic;   /* курсив */
+            font-weight: 500;
+            color: var(--ivory);
+            text-shadow: 0 0 8px rgba(0,0,0,.85);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+
     </style>
 </head>
+
+<!-- Модалка выбора блюд -->
+<div id="order-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+        <div class="modal-top">
+            <h3>Выбор блюд к брони</h3>
+            <button id="order-close" class="btn btn-secondary">Закрыть</button>
+        </div>
+
+        <div class="controls">
+            <input id="dish-search" type="text" placeholder="Поиск по названию или категории..." />
+            <span class="muted" id="dish-counter"></span>
+        </div>
+
+        <div id="dish-list" class="dish-grid"></div>
+
+        <div class="bar">
+            <div class="muted">Выбрано: <b id="dish-selected-count">0</b></div>
+            <button id="order-submit" class="btn">Добавить выбранные блюда</button>
+        </div>
+        <div class="error" id="order-error"></div>
+        <div class="ok" id="order-ok"></div>
+    </div>
+</div>
+
+
 <body>
 <div class="overlay"></div>
 
@@ -182,12 +291,12 @@
                 <div id="last-booking" class="muted"></div>
             </div>
             <div class="imgbox">
-                <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="fantasy-tavern">
-                    <defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#3d3d3d"/><stop offset="1" stop-color="#0e0f13"/></linearGradient></defs>
-                    <rect width="800" height="500" fill="url(#g1)"/>
-                    <g opacity=".18"><circle cx="650" cy="120" r="90" fill="#166D3B"/><circle cx="200" cy="360" r="120" fill="#7B1E28"/><rect x="340" y="200" width="220" height="140" rx="18" fill="#C4A95B"/></g>
-                </svg>
+                <div class="decor-box">
+                    <img src="decor.png" alt="Декоративное изображение" class="decor-img">
+                    <div class="placeholder-text">Здесь будет что-то интересное…</div>
+                </div>
             </div>
+
         </div>
 
         <div id="view-booking" class="content hidden">
@@ -222,9 +331,19 @@
 </div>
 
 <script>
+    const ORDER_BASE = '/order'
     const AUTH_BASE = '/auth'
     const BOOKING_BASE = '/booking'
-    const state={token:localStorage.getItem('token')||null,email:localStorage.getItem('email')||'',available:new Set(),selectedTable:null,bookTime:null,lastBooking:JSON.parse(localStorage.getItem('lastBooking')||'null')}
+    const state = {
+        token: localStorage.getItem('token') || null,
+        email: localStorage.getItem('email') || '',
+        available: new Set(),
+        selectedTable: null,
+        bookTime: null,
+        lastBooking: JSON.parse(localStorage.getItem('lastBooking') || 'null'),
+        dishesCache: [],          // <— кэш блюд
+        dishesLoadedAt: 0         // <— timestamp кэша
+    }
     const el=(id)=>document.getElementById(id)
     const viewAuth=el('view-auth'), viewHome=el('view-home'), viewBooking=el('view-booking')
     const userEmail=el('user-email'), logoutBtn=el('logout-btn'), goBooking=el('go-booking'), lastBookingBox=el('last-booking')
@@ -245,14 +364,47 @@
     }
 
     function renderHome(){
-        userEmail.textContent=state.email||''
-        logoutBtn.classList.toggle('hidden',!state.token)
-        if(state.lastBooking){
-            const b=state.lastBooking
-            const when=formatBookDate(b.bookDate || b.bookTime)
-            lastBookingBox.innerHTML=`Ваша бронь: <b>${b.name}</b>, стол ${b.table}, ${when}, номер: ${b.bookId}`
-        }else lastBookingBox.textContent=''
+        userEmail.textContent = state.email || ''
+        logoutBtn.classList.toggle('hidden', !state.token)
+
+        lastBookingBox.innerHTML = ''
+        if (state.lastBooking) {
+            const b = state.lastBooking
+            const when = formatBookDate(b.bookDate || b.bookTime)
+
+            // блюда, если они есть (список от сервера)
+            const dishesHtml = Array.isArray(b.dishes) && b.dishes.length > 0
+                ? `<ul style="margin:6px 0 0 16px;padding:0;list-style:disc;color:var(--muted)">
+                  ${b.dishes.map(d => `<li><b>${d.dishName}</b> — ${d.cost || '-'}₽</li>`).join('')}
+               </ul>`
+                : `<div class="muted" style="margin-top:6px">Блюда ещё не выбраны</div>`
+
+            const html = `
+          <div class="booking-card">
+            <div class="row">
+              <div class="meta">
+                <span class="badge">Бронь № ${b.bookId}</span>
+                <span class="badge">Стол ${b.table}</span>
+                <span class="badge">${when}</span>
+              </div>
+              <div class="booking-actions">
+                <button id="add-dishes-btn" class="btn">Добавить блюда</button>
+              </div>
+            </div>
+            <div class="muted" style="margin-top:8px">
+              Оформлена на: <b>${b.name}</b> (${b.email || state.email || ''})
+            </div>
+            ${dishesHtml}
+          </div>
+        `
+            lastBookingBox.insertAdjacentHTML('beforeend', html)
+
+            const addBtn = document.getElementById('add-dishes-btn')
+            addBtn?.addEventListener('click', () => openOrderModal(b.bookId))
+        }
     }
+
+
 
     function tableSvg(active,selected){
         const stroke=selected?'#ffffff':active?'#C4A95B':'#6b6b6b'
@@ -318,7 +470,7 @@
             const body=await jsonOrText(res)
             if(!res.ok) throw new Error(typeof body==='string'?body:(body?.message||'Ошибка входа'))
             const token=body.token
-            setAuth(email,token); show(viewHome); renderHome(); loginOk.textContent='Успешный вход.'
+            setAuth(email,token); await prefetchDishes(true); show(viewHome); renderHome(); loginOk.textContent='Успешный вход.'
         }catch(err){loginError.textContent=err.message}
     })
 
@@ -332,7 +484,7 @@
             const body=await jsonOrText(res)
             if(!res.ok) throw new Error(typeof body==='string'?body:(body?.message||'Ошибка регистрации'))
             const token=body.token
-            setAuth(email,token); show(viewHome); renderHome(); registerOk.textContent='Аккаунт создан.'
+            setAuth(email,token); await prefetchDishes(true); show(viewHome); renderHome(); registerOk.textContent='Аккаунт создан.'
         }catch(err){registerError.textContent=err.message}
     })
 
@@ -369,7 +521,161 @@
         }catch(err){ bookingError.textContent = err.message }
     })
 
-    ;(function boot(){ userEmail.textContent=state.email||''; logoutBtn.classList.toggle('hidden',true); show(viewAuth) })()
+    ;(async function boot(){
+        userEmail.textContent = state.email || ''
+        logoutBtn.classList.toggle('hidden', true)
+
+        if (state.token) {
+            await prefetchDishes(true)
+        }
+
+        show(viewAuth)
+    })()
+
+
+    const orderModal = document.getElementById('order-modal')
+    const orderClose = document.getElementById('order-close')
+    const dishListEl = document.getElementById('dish-list')
+    const dishSearchEl = document.getElementById('dish-search')
+    const dishCounterEl = document.getElementById('dish-counter')
+    const dishSelectedCountEl = document.getElementById('dish-selected-count')
+    const orderSubmitBtn = document.getElementById('order-submit')
+    const orderError = document.getElementById('order-error')
+    const orderOk = document.getElementById('order-ok')
+
+    let currentBookId = null
+    let allDishes = []         // список от бэка (GET /order)
+    let selectedDishNames = new Set()  // выбранные dishName
+
+    async function openOrderModal(bookId){
+        currentBookId = bookId
+        selectedDishNames = new Set()
+        dishSelectedCountEl.textContent = '0'
+        orderError.textContent = ''
+        orderOk.textContent = ''
+
+        // Загружаем блюда с сервера (без force, если кэш ещё актуальный)
+        await prefetchDishes(true)
+
+        renderDishListFromCache()   // сразу рисуем все
+        orderModal.classList.remove('hidden')
+    }
+
+
+    // Рендер из кэша + поиск
+    function renderDishListFromCache(){
+        const all = Array.isArray(state.dishesCache) ? state.dishesCache : []
+        const q = (dishSearchEl.value || '').trim().toLowerCase()
+
+        // если поле поиска пустое, показываем все блюда
+        const list = !q ? all : all.filter(d => {
+            const name = (d.dishName || '').toLowerCase()
+            const cat  = (d.category || '').toLowerCase()
+            return name.includes(q) || cat.includes(q)
+        })
+
+        dishListEl.innerHTML = ''
+        dishCounterEl.textContent = `Найдено: ${list.length}`
+
+        list.forEach(d => {
+            const id = 'dish_' + (d.dishName || '').replace(/\s+/g, '_')
+            const checked = selectedDishNames.has(d.dishName)
+            const el = document.createElement('label')
+            el.className = 'dish-card'
+            el.htmlFor = id
+            el.innerHTML = `
+          <input type="checkbox" id="${id}" ${checked ? 'checked':''} style="margin-top:4px">
+          <div>
+            <h4>${d.dishName || 'Без названия'}</h4>
+            <div class="dish-pill">
+              <span class="pill">${d.category || '—'}</span>
+              <span class="pill">${d.cost ? (d.cost + '₽') : '—'}</span>
+            </div>
+            ${d.description ? `<p>${d.description}</p>` : ''}
+          </div>
+        `
+            const checkbox = el.querySelector('input')
+            checkbox.addEventListener('change', () => {
+                if(checkbox.checked) selectedDishNames.add(d.dishName)
+                else selectedDishNames.delete(d.dishName)
+                dishSelectedCountEl.textContent = String(selectedDishNames.size)
+            })
+            dishListEl.appendChild(el)
+        })
+    }
+
+
+    dishSearchEl.addEventListener('input', renderDishListFromCache)
+
+
+    function closeOrderModal(){
+        orderModal.classList.add('hidden')
+    }
+
+    orderClose.addEventListener('click', closeOrderModal)
+    orderModal.addEventListener('click', (e)=>{
+        if(e.target === orderModal) closeOrderModal()
+    })
+
+    async function authFetch(url, opts = {}) {
+        const headers = opts.headers || {}
+        if (state.token) headers['Authorization'] = 'Bearer ' + state.token
+        return fetch(url, { ...opts, headers })
+    }
+
+    async function prefetchDishes(force = false) {
+        // обновляем кэш не чаще, чем раз в 60 сек (или если force === true)
+        if (!force && Date.now() - state.dishesLoadedAt < 60_000 && state.dishesCache.length) return
+        try {
+            const res = await authFetch(ORDER_BASE, { method: 'GET' })
+            const body = await jsonOrText(res)
+            if (!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Не удалось загрузить блюда'))
+            state.dishesCache = Array.isArray(body) ? body : []
+            state.dishesLoadedAt = Date.now()
+        } catch (e) {
+            // кэш не трогаем — пусть останется старый
+            console.warn('prefetch dishes failed:', e)
+        }
+    }
+
+
+    orderSubmitBtn.addEventListener('click', async () => {
+        try{
+            orderError.textContent = ''
+            orderOk.textContent = ''
+            if(!currentBookId) throw new Error('Неизвестный номер брони')
+            if(selectedDishNames.size === 0) throw new Error('Выберите хотя бы одно блюдо')
+
+            // Формируем список DTO: [{ dishName, bookId }, ...]
+            const payload = Array.from(selectedDishNames).map(name => ({
+                dishName: name,
+                bookId: currentBookId
+            }))
+
+            const headers = { 'Content-Type': 'application/json' }
+            if (state.token) headers['Authorization'] = 'Bearer ' + state.token
+
+            const res = await fetch(ORDER_BASE, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(payload)
+            })
+            const body = await jsonOrText(res)
+            if(!res.ok) throw new Error(typeof body === 'string' ? body : (body?.message || 'Не удалось добавить блюда'))
+
+            orderOk.textContent = 'Блюда добавлены к брони.'
+            // обновляем локально
+            if (Array.isArray(body)) {
+                state.lastBooking.dishes = body
+                localStorage.setItem('lastBooking', JSON.stringify(state.lastBooking))
+                renderHome()
+            }
+
+        }catch(err){
+            orderError.textContent = err.message
+        }
+    })
+
 </script>
 </body>
 </html>

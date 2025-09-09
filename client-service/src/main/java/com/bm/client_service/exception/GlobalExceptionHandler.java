@@ -49,4 +49,13 @@ public class GlobalExceptionHandler {
         errors.put("message", "Booking not found");
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(TableNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleTableNotFoundException(TableNotFoundException exception) {
+        Map<String, String> errors = new HashMap<>();
+
+        log.warn("Table not found {}", exception.getMessage());
+        errors.put("message", "Table not found");
+        return ResponseEntity.badRequest().body(errors);
+    }
 }

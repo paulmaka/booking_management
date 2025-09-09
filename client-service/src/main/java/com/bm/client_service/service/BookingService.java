@@ -4,6 +4,7 @@ import com.bm.client_service.dto.BookingRequestDTO;
 import com.bm.client_service.dto.BookingResponseDTO;
 import com.bm.client_service.dto.TablesRequestDTO;
 import com.bm.client_service.dto.TablesResponseDTO;
+import com.bm.client_service.exception.TableNotFoundException;
 import com.bm.client_service.mapper.BookingMapper;
 import com.bm.client_service.model.Booking;
 import com.bm.client_service.model.Client;
@@ -78,7 +79,7 @@ public class BookingService {
         Optional<RestaurantTable> table = restaurantTableService.findRestaurantTableById(Long.valueOf(bookingRequestDTO.getTable()));
 
         if (table.isEmpty()) {
-
+            throw new TableNotFoundException("Table " + bookingRequestDTO.getTable() + " not found");
         }
         RestaurantTable restaurantTable = table.get();
 

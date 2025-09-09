@@ -9,9 +9,21 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Класс-репозиторий для работы с таблицей столов.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Repository
 public interface RestaurantTableRepository extends JpaRepository<RestaurantTable,Long> {
 
+    /**
+     * Ищет в БД при помощи нативного запроса все столики, период брони которых не пересекается с переданным промежутком времени
+     * @param start начало промежутка времени
+     * @param end конец промежутка времени
+     * @return список незанятых в этот промежуток времени столиков
+     */
     @Query(value = """
     select t.* from tables t
     where not exists (

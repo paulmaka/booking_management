@@ -20,6 +20,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Класс-сервис, содержит логику создания новых броней.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Service
 public class BookingService {
 
@@ -35,6 +41,13 @@ public class BookingService {
         this.clientService = clientService;
     }
 
+    /**
+     * Возвращает список доступных в этот промежуток времени столиков. Принято, что клиент занимает стол до двух часов.
+     * Поэтому startOfWantedDate принимается за время, введённое клиентом, а endOfWantedDate его же с прибавлением дух часов.
+     * При помощи restaurantTableService находятся все столики, промежуток брони которых не пересекается с данным промежутком.
+     * @param tablesRequestDTO DTO, содержащее время желаемой брони
+     * @return список DTO, содержащих номера столов, доступных в необходимый промежуток времени
+     */
     public List<TablesResponseDTO> getAvailableTables(TablesRequestDTO tablesRequestDTO) {
         List<TablesResponseDTO> availableTables = new ArrayList<>();
 
@@ -55,6 +68,11 @@ public class BookingService {
         return availableTables;
     }
 
+    /**
+     * Создаёт новую бронь с введёнными параметрами
+     * @param bookingRequestDTO DTO, содержащее данные о клиенте, времени бронирования и номером столика
+     * @return DTO ответа с информацией о брони, клиента и столе.
+     */
     public BookingResponseDTO createBooking(BookingRequestDTO bookingRequestDTO) {
         Client client = BookingMapper.toClient(bookingRequestDTO);
         Optional<RestaurantTable> table = restaurantTableService.findRestaurantTableById(Long.valueOf(bookingRequestDTO.getTable()));
@@ -73,6 +91,11 @@ public class BookingService {
         return BookingMapper.toBookingResponseDTO(addedBooking);
     }
 
+    /**
+     * Ищет бронь по её ID
+     * @param bookingId идентификатор брони
+     * @return Optional, содержащий либо найденную бронь, либо null
+     */
     public Optional<Booking> findBooking(String bookingId) {
         return bookingRepository.findById(UUID.fromString(bookingId));
     }

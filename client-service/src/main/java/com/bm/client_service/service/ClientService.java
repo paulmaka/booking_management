@@ -15,6 +15,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс-сервис, содержит логику работы с сущностями клиентов.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Service
 public class ClientService {
 
@@ -69,7 +75,11 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
-
+    /**
+     * Сохранение в БД нового клиента
+     * @param client объект, отражающий сущность клиента, который будет сохранён в БД
+     * @return объект сохранённого клиента
+     */
     public Client save(Client client) {
         return clientRepository.save(client);
     }

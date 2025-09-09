@@ -10,8 +10,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс-репозиторий для работы с таблицей броней.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
-
 
 }

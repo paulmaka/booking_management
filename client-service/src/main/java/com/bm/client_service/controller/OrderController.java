@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Класс-контроллер формирования заказов, принимает http запросы и вызывает соответствующую логику сервиса, возвращает код и тело ответа.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -22,6 +28,10 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    /**
+     * Возвращает список всех блюд из таблицы dishes
+     * @return ResponseEntity с кодом 200 и телом, содержащим список всех блюд, имеющихся в таблице, с их описанием, типом и стоимостью
+     */
     @Operation(summary = "Выводит список из всех блюд.")
     @GetMapping
     public ResponseEntity<List<OrderResponseDTO>> getAllDishes(){
@@ -30,6 +40,11 @@ public class OrderController {
         return ResponseEntity.ok(listOfDishes);
     }
 
+    /**
+     * Создаёт новые заказы клиента, оформившего данную бронь
+     * @param listOfOrders тело запроса, содержащее список выбранных блюд к данной брони
+     * @return ResponseEntity с кодом 200 и телом, содержащим информацию о выбранном блюде
+     */
     @Operation(summary = "Создаёт заказ к брони.")
     @PostMapping
     public ResponseEntity<List<OrderResponseDTO>> createOrders(@RequestBody List<OrderRequestDTO> listOfOrders){

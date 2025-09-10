@@ -91,4 +91,5 @@ class BookingServiceTest {
         TableNotFoundException exception = assertThrows(TableNotFoundException.class,  () -> bookingService.createBooking(bookingRequestDTO));
         assertEquals("Table 10000 not found", exception.getMessage());
     }
+
 }

@@ -4,6 +4,7 @@ package com.bm.client_service.service;
 import com.bm.client_service.dto.OrderRequestDTO;
 import com.bm.client_service.dto.OrderResponseDTO;
 import com.bm.client_service.exception.BookingNotFoundException;
+import com.bm.client_service.exception.DishNotFoundException;
 import com.bm.client_service.mapper.OrderMapper;
 import com.bm.client_service.model.Booking;
 import com.bm.client_service.model.Client;
@@ -50,11 +51,15 @@ public class OrderService {
                 throw new BookingNotFoundException("Booking not found");
             }
             Client client = booking.get().getClient();
-            Dish dish = dishService.getDishByName(orderDTO.getDishName()).get();
+
+            Optional<Dish> dish = dishService.getDishByName(orderDTO.getDishName());
+            if (dish.isEmpty()) {
+                throw new DishNotFoundException("Dish " + orderDTO.getDishName() + " not found");
+            }
 
             Order order = new Order();
             order.setClient(client);
-            order.setDish(dish);
+            order.setDish(dish.get());
 
             Order addedOrder = orderRepository.save(order);
 

@@ -6,6 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс-сущность столов.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Entity
 @Table(name = "tables")
 public class RestaurantTable {

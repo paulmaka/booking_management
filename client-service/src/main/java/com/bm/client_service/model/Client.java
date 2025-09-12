@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс-сущность клиентов.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Entity
 @Table(name = "clients")
 public class Client {

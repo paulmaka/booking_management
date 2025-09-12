@@ -4,6 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Класс DTO для запроса регистрации брони пользователя.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 public class BookingRequestDTO {
 
     @NotBlank(message = "Name is required")

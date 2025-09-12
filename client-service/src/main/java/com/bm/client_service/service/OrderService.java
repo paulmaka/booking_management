@@ -18,6 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс-сервис, содержит логику создания новых заказов блюд.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Service
 public class OrderService {
 
@@ -34,12 +40,22 @@ public class OrderService {
         this.bookingService = bookingService;
     }
 
+    /**
+     * Возвращает список всех блюд, которые есть в меню.
+     * @return список DTO-ов, содержащий информацию о каждом блюде
+     */
     public List<OrderResponseDTO> getAllDishes() {
         List<OrderResponseDTO> listOfDishes = dishService.getAllDishes();
 
         return listOfDishes;
     }
 
+    /**
+     * Возвращает список блюд, добавленных в заказ к данной брони. На вход поступают выбранные доступные блюда.
+     * В случае, если блюдо или бронь не были найдены выбрасывается соответсвующая ошибка для глобального обработчика ошибок.
+     * @param listOfOrdersDTO список из DTO-ов, содержащий название каждого блюда (они уникальны), выбранного для заказа, и номер брони.
+     * @return список DTO-ов, содержащий информацию о каждом выбранном блюде, добавленном в заказ.
+     */
     public List<OrderResponseDTO> createOrders(List<OrderRequestDTO> listOfOrdersDTO) {
         List<OrderResponseDTO> listOfDishesInOrders = new ArrayList<>();
 

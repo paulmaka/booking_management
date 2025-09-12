@@ -6,6 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Класс-сущность броней.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Entity
 @Table(name = "bookings")
 public class Booking {

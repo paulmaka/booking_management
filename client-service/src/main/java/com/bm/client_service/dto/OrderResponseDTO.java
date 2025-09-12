@@ -1,5 +1,11 @@
 package com.bm.client_service.dto;
 
+/**
+ * Класс DTO для ответа на запрос создания заказа блюда пользователя.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 public class OrderResponseDTO {
 
     private String cost;

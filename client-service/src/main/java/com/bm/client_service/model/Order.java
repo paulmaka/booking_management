@@ -5,6 +5,12 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
+/**
+ * Класс-сущность заказов.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 @Entity
 @Table(name = "orders")
 public class Order {

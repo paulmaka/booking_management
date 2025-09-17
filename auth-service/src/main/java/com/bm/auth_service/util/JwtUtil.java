@@ -26,10 +26,11 @@ public class JwtUtil {
     private final Key secretKey;
 
     /**
+     * Ключ передаётся в качестве параметре, декодируется и превращается в secretKey.
      * @param secret ключ для создания уникальной подписи токена, передаётся в виде переменной окружения JWT_SECRET
      */
     public JwtUtil(@Value("${jwt.secret}") String secret) {
-        byte[] keyBytes = Base64.getDecoder().decode(secret.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes = Base64.getDecoder().decode(secret.getBytes(StandardCharsets.UTF_8)); // декодирование ключа
 
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -55,6 +56,7 @@ public class JwtUtil {
      * Проверка валидности токена. Пробрасывает ошибки в случае не валидности.
      * @param token токен пользователя
      */
+    // TODO разбить ошибки на разные и логировать
     public void validateToken(String token) {
         try {
             Jwts.parser().verifyWith((SecretKey) secretKey).build().parseClaimsJws(token);

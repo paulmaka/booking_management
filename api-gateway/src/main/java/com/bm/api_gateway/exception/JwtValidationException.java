@@ -9,6 +9,12 @@ import reactor.core.publisher.Mono;
 
 @RestControllerAdvice
 public class JwtValidationException {
+
+    /**
+     * При получении статуса 401 от auth-service заворачивает его так же в 401, по умолчанию выдавалось бы 500 в retrieve()
+     * @param exchange
+     * @return
+     */
     @ExceptionHandler(WebClientResponseException.Unauthorized.class)
     public Mono<Void> handleWebClientResponseException(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+
+/**
+ * Фабрика фильтров Spring Cloud Gateway, которая вставляет проверку JWT через сервис auth-service.
+ */
 @Component
 public class JwtValidationGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
 
@@ -17,21 +21,26 @@ public class JwtValidationGatewayFilterFactory extends AbstractGatewayFilterFact
         this.webClient = webClientBuilder.baseUrl(authServiceUrl).build();
     }
 
+    /**
+     * Возвращает конкретный GatewayFilter, который будет применяться к фильтруемым запросам
+     * @param config
+     * @return необходимый фильтр
+     */
     @Override
     public GatewayFilter apply(Object config) {
         return  (exchange, chain) -> {
-            String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+            String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION); // получение токена
 
-            if (token == null || !token.startsWith("Bearer ")) {
+            if (token == null || !token.startsWith("Bearer ")) { // Если токена нет или он не начинается корректно, то возвращается 401
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
 
             return webClient.get().uri("/validate")
                     .header(HttpHeaders.AUTHORIZATION, token)
-                    .retrieve()
-                    .toBodilessEntity()
-                    .then(chain.filter(exchange));
+                    .retrieve() // Если /validate вернёт 4xx/5xx или произойдёт сетевое исключение, retrieve() сгенерирует ошибку
+                    .toBodilessEntity() // Важен только статус
+                    .then(chain.filter(exchange)); // При 2** управление передаётся основному фильтру и он уже идёт к целевому бэкенду
         };
     }
 

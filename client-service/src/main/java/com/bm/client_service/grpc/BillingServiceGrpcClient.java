@@ -21,9 +21,9 @@ public class BillingServiceGrpcClient {
     ) {
         log.info("Connecting to billing service GRPC service at {}:{}", serverAddress, serverPort);
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(serverAddress, serverPort).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(serverAddress, serverPort).usePlaintext().build(); // Устанавливает TCP соединение usePlaintext отключает TLS, данные передаются нешифрованно
 
-        blockingStub =  BillingServiceGrpc.newBlockingStub(channel);
+        blockingStub =  BillingServiceGrpc.newBlockingStub(channel); // Инкапсулирует сериализацию и десериализацию и сетевое взаимодействие
     }
 
     public BillingResponse createBillingAccount(String clientId, String name, String email) {

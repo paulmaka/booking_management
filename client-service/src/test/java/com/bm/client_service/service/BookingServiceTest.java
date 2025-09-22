@@ -3,6 +3,7 @@ package com.bm.client_service.service;
 import com.bm.client_service.dto.BookingRequestDTO;
 import com.bm.client_service.dto.BookingResponseDTO;
 import com.bm.client_service.exception.TableNotFoundException;
+import com.bm.client_service.kafka.KafkaProducer;
 import com.bm.client_service.model.Booking;
 import com.bm.client_service.model.Client;
 import com.bm.client_service.model.RestaurantTable;
@@ -29,18 +30,23 @@ class BookingServiceTest {
     private ClientService clientService;
     @Mock
     private BookingRepository bookingRepository;
+    @Mock
+    private KafkaProducer kafkaProducer;
+
 
     @InjectMocks
     private BookingService bookingService;
 
     @Test
     void createBookingSuccessfulTest() {
+        // Arrange
         long tableId = 1L;
 
         RestaurantTable restaurantTable = new RestaurantTable();
         restaurantTable.setId(tableId);
         restaurantTable.setCountOfUsage(0);
 
+        when(restaurantTableService.save(any())).thenReturn(null);
         when(restaurantTableService.findRestaurantTableById(tableId)).thenReturn(Optional.of(restaurantTable));
 
         when(clientService.save(any(Client.class))).thenAnswer(inv -> {
@@ -55,7 +61,7 @@ class BookingServiceTest {
             return booking;
         });
 
-        // Arrange
+
         BookingRequestDTO  bookingRequestDTO = new BookingRequestDTO();
         bookingRequestDTO.setBookTime("2025-08-15T10:10:00");
         bookingRequestDTO.setEmail("email@example.com");
@@ -76,11 +82,11 @@ class BookingServiceTest {
 
     @Test
     void createBookingTableNotFoundTest() {
+        // Arrange
         long tableId = 10000L;
 
         when(restaurantTableService.findRestaurantTableById(tableId)).thenReturn(Optional.empty());
 
-        // Arrange
         BookingRequestDTO  bookingRequestDTO = new BookingRequestDTO();
         bookingRequestDTO.setBookTime("2025-08-15T10:10:00");
         bookingRequestDTO.setEmail("email@example.com");

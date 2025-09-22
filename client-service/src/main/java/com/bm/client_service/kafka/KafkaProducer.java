@@ -1,7 +1,7 @@
 package com.bm.client_service.kafka;
 
-import client.events.ClientEvent;
-import com.bm.client_service.model.Client;
+import client.events.BookingEvent;
+import com.bm.client_service.model.Booking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +26,19 @@ public class KafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendEvent(Client client) {
-        ClientEvent clientEvent = ClientEvent.newBuilder()
-                .setClientId(client.getId().toString())
-                .setName(client.getName())
-                .setEmail(client.getEmail())
-                .setEventType("CLIENT_CREATED")
+    public void sendEvent(Booking booking) {
+        BookingEvent bookingEvent = BookingEvent.newBuilder()
+                .setId(String.valueOf(booking.getId()))
+                .setClientId(String.valueOf(booking.getClient().getId()))
+                .setTableId(String.valueOf(booking.getTable().getId()))
+                .setBookDate(String.valueOf(booking.getBookDate()))
+                .setRegisterDate(String.valueOf(booking.getRegisterDate()))
                 .build();
 
         try {
-            kafkaTemplate.send("client", clientEvent.toByteArray());
+            kafkaTemplate.send("booking", bookingEvent.toByteArray());
         } catch (Exception e) {
-            log.error("Error sending ClientEvent even: {}", clientEvent);
+            log.error("Error sending BookingEvent even: {}", bookingEvent);
         }
     }
 

@@ -4,9 +4,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name" : "Vi",
-  "email" : "vi@example.com",
-  "bookTime" : "2025-09-05T15:40:00",
+  "name" : "Vin",
+  "email" : "vin@example.com",
+  "bookTime" : "2025-10-05T15:40:00",
   "table" : "3"
 }
 ###

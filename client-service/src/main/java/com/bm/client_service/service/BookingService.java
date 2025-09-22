@@ -5,6 +5,7 @@ import com.bm.client_service.dto.BookingResponseDTO;
 import com.bm.client_service.dto.TablesRequestDTO;
 import com.bm.client_service.dto.TablesResponseDTO;
 import com.bm.client_service.exception.TableNotFoundException;
+import com.bm.client_service.kafka.KafkaProducer;
 import com.bm.client_service.mapper.BookingMapper;
 import com.bm.client_service.model.Booking;
 import com.bm.client_service.model.Client;
@@ -31,12 +32,15 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final ClientService clientService;
     private final RestaurantTableService restaurantTableService;
+    private final KafkaProducer kafkaProducer;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, RestaurantTableService restaurantTableService,  ClientService clientService) {
+    public BookingService(BookingRepository bookingRepository, RestaurantTableService restaurantTableService,
+                          ClientService clientService,  KafkaProducer kafkaProducer) {
         this.bookingRepository = bookingRepository;
         this.restaurantTableService = restaurantTableService;
         this.clientService = clientService;
+        this.kafkaProducer = kafkaProducer;
     }
 
     /**
@@ -67,7 +71,7 @@ public class BookingService {
     }
 
     /**
-     * Создаёт новую бронь с введёнными параметрами
+     * Создаёт новую бронь с введёнными параметрами и передаёт данные для аналитики при помощи Kafka
      * @param bookingRequestDTO DTO, содержащее данные о клиенте, времени бронирования и номером столика
      * @return DTO ответа с информацией о брони, клиента и столе.
      */
@@ -79,12 +83,16 @@ public class BookingService {
             throw new TableNotFoundException("Table " + bookingRequestDTO.getTable() + " not found");
         }
         RestaurantTable restaurantTable = table.get();
+        restaurantTable.setCountOfUsage(restaurantTable.getCountOfUsage() + 1);
+        restaurantTableService.save(restaurantTable);
 
         Client addedClient = clientService.save(client);
         log.info("Client Created : {}, Table created : {}", addedClient, restaurantTable);
 
         Booking booking = BookingMapper.toBooking(bookingRequestDTO, addedClient, restaurantTable);
         Booking addedBooking = bookingRepository.save(booking);
+
+        kafkaProducer.sendEvent(addedBooking);
 
         return BookingMapper.toBookingResponseDTO(addedBooking);
     }

@@ -41,4 +41,8 @@ public class RestaurantTableService {
         return restaurantTableRepository.findById(restaurantTableId);
     }
 
+    public RestaurantTable save(RestaurantTable restaurantTable) {
+        return restaurantTableRepository.save(restaurantTable);
+    }
+
 }

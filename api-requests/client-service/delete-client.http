@@ -1,3 +1,0 @@
-### Delete client
-DELETE http://localhost:4004/api/clients/6290c469-d3dd-42e7-a95d-4eb09f1bf254
-###

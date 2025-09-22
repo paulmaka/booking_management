@@ -1,9 +1,11 @@
 package com.bm.client_service.service;
 
+import billing.BillingResponse;
 import com.bm.client_service.dto.OrderRequestDTO;
 import com.bm.client_service.dto.OrderResponseDTO;
 import com.bm.client_service.exception.BookingNotFoundException;
 import com.bm.client_service.exception.DishNotFoundException;
+import com.bm.client_service.grpc.BillingServiceGrpcOrder;
 import com.bm.client_service.model.Booking;
 import com.bm.client_service.model.Client;
 import com.bm.client_service.model.Dish;
@@ -34,12 +36,17 @@ class OrderServiceTest {
     private BookingService bookingService;
     @Mock
     private DishService dishService;
+    @Mock
+    private BillingServiceGrpcOrder billingServiceGrpcOrder;
 
     @InjectMocks
     private OrderService orderService;
 
     @Test
     void createOrdersSuccessfulTest() {
+        // Arrange
+        BillingResponse response = BillingResponse.newBuilder().setStatus("responseStatus").build();
+        when(billingServiceGrpcOrder.createBilling(any())).thenReturn(response);
 
         String bookId = UUID.randomUUID().toString();
         String dishName = "Potato";
@@ -72,7 +79,6 @@ class OrderServiceTest {
             return order;
         });
 
-        // Arrange
         List<OrderRequestDTO> orderRequestDTOList = new ArrayList<>();
         OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
         orderRequestDTO.setBookId(bookId);
@@ -102,11 +108,12 @@ class OrderServiceTest {
 
     @Test
     void createOrderBookingNotFoundTest() {
+        // Arrange
+
         String bookId = UUID.randomUUID().toString();
 
         when(bookingService.findBooking(bookId)).thenReturn(Optional.empty());
 
-        // Arrange
         List<OrderRequestDTO> orderRequestDTOList = new ArrayList<>();
         OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
         orderRequestDTO.setBookId(bookId);
@@ -120,6 +127,8 @@ class OrderServiceTest {
 
     @Test
     void createOrderDishNotFoundTest() {
+        // Arrange
+
         String bookId = UUID.randomUUID().toString();
 
         Client client = new Client();
@@ -137,7 +146,6 @@ class OrderServiceTest {
 
         when(dishService.getDishByName(any())).thenReturn(Optional.empty());
 
-        // Arrange
         List<OrderRequestDTO> orderRequestDTOList = new ArrayList<>();
         OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
         orderRequestDTO.setBookId(bookId);

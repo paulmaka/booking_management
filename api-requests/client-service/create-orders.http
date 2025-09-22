@@ -6,12 +6,12 @@ Content-Type: application/json
 [
     {
       "dishName" : "Мороженое",
-      "bookId" : "6290c469-d3dd-42e7-a95d-4eb09f1bf281"
+      "bookId" : "6290c469-d3dd-42e7-a95d-4eb09f1bf283"
     },
 
     {
       "dishName" : "Чай",
-      "bookId" : "6290c469-d3dd-42e7-a95d-4eb09f1bf281"
+      "bookId" : "6290c469-d3dd-42e7-a95d-4eb09f1bf283"
     }
 ]
 ###

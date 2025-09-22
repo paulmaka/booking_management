@@ -10,12 +10,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
-public class BillingServiceGrpcClient {
-    private final BillingServiceGrpc.BillingServiceBlockingStub blockingStub;
-    private static final Logger log = LoggerFactory.getLogger(BillingServiceGrpcClient.class);
+import java.util.List;
 
-    public BillingServiceGrpcClient(
+/**
+ * Класс-сервис, содержит логику взаимодействия с billing-service.
+ * @author Paul Makarenko
+ * @version 0.0.1
+ * @since 0.0.1
+ */
+@Service
+public class BillingServiceGrpcOrder {
+    private final BillingServiceGrpc.BillingServiceBlockingStub blockingStub;
+    private static final Logger log = LoggerFactory.getLogger(BillingServiceGrpcOrder.class);
+
+    public BillingServiceGrpcOrder(
             @Value("${billing.service.address:localhost}") String serverAddress,
             @Value("${billing.service.grpc.port:9001}") int serverPort
     ) {
@@ -23,14 +31,19 @@ public class BillingServiceGrpcClient {
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(serverAddress, serverPort).usePlaintext().build(); // Устанавливает TCP соединение usePlaintext отключает TLS, данные передаются нешифрованно
 
-        blockingStub =  BillingServiceGrpc.newBlockingStub(channel); // Инкапсулирует сериализацию и десериализацию и сетевое взаимодействие
+        blockingStub =  BillingServiceGrpc.newBlockingStub(channel); // Инкапсулирует сериализацию и десериализацию и сетевое взаимодействие (blockingStub синхронный)
     }
 
-    public BillingResponse createBillingAccount(String clientId, String name, String email) {
+    /**
+     * Создаёт счёт в billing-service и возвращает статус создания счёта.
+     * @param costs список стоимостей всех блюд в заказе
+     * @return статус создания счёта
+     */
+    public BillingResponse createBilling(List<String> costs) {
 
-        BillingRequest request = BillingRequest.newBuilder().setClientId(clientId).setName(name).setEmail(email).build();
+        BillingRequest request = BillingRequest.newBuilder().addAllCosts(costs).build();
 
-        BillingResponse response = blockingStub.createBillingAccount(request);
+        BillingResponse response = blockingStub.createBilling(request);
         log.info("Received response from billing service via GRPC: {}", response);
 
         return response;
